@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+
+<html xmlns:th="https://www.thymeleaf.org" th:replace="~{fragments/layout :: layout (~{::body},'home')}">
+
+<body>
+
+  <h2 th:text="#{welcome}">Welcome</h2>
+  <div class="row">
+    <div class="col-md-12">
+      <img class="img-responsive" src="../static/resources/images/pets.png" th:src="@{/resources/images/pets.png}" />
+    </div>
+  </div>
+
+  <div class="row" style="margin-top: 20px;">
+    <div class="col-md-12">
+      <h3>Send SMS to All Owners</h3>
+      <p>This will send SMS to all owners, grouped by city</p>
+      <button type="button" class="btn btn-primary" onclick="sendSmsToAll()">Send SMS to All</button>
+    </div>
+  </div>
+
+  <script>
+    function sendSmsToAll() {
+      if (confirm('Send SMS to all owners (grouped by city)?')) {
+        fetch('/sms/all', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json'
+          }
+        }).then(function(response) {
+          if (response.redirected) {
+            window.location.href = response.url;
+          } else {
+            alert('SMS sent successfully!');
+            window.location.reload();
+          }
+        }).catch(function(error) {
+          alert('Error sending SMS: ' + error);
+        });
+      }
+    }
+  </script>
+
+</body>
+
+</html>
