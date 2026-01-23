@@ -15,6 +15,7 @@
  */
 package org.springframework.samples.petclinic.owner;
 
+import io.opentelemetry.api.trace.Span;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
@@ -65,12 +66,15 @@ public class EmailService {
 	 * Send Email with Owner and Pet validation
 	 */
 	public void sendEmail(Owner owner, Pet pet) throws IllegalArgumentException{
+		// Get current trace ID from OpenTelemetry
+		String traceId = Span.current().getSpanContext().getTraceId();
+
 		if (!isEmailValid(owner.getEmail()) || !validationService.validateOwner(owner) || !validatePet(pet)) {
 			throw new IllegalArgumentException("Invalid validation");
 		}
 		// For now, we'll use telephone field as email or create a placeholder
 		// In real implementation, Owner should have an email field
 		logger.info("Sending Email " + owner.getEmail() + " to owner: " + owner.getFirstName() + " "
-				+ owner.getLastName());
+				+ owner.getLastName() + " [traceId=" + traceId + "]");
 	}
 }

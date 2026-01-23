@@ -15,6 +15,7 @@
  */
 package org.springframework.samples.petclinic.owner;
 
+import io.opentelemetry.api.trace.Span;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
@@ -86,11 +87,14 @@ public class SmsService {
 	 * Send SMS with Owner and Pet validation
 	 */
 	public void sendSms(Owner owner, Pet pet) {
+		// Get current trace ID from OpenTelemetry
+		String traceId = Span.current().getSpanContext().getTraceId();
+
 		// Validate and send SMS
 		if (!validationService.validateOwner(owner) || !validatePet(pet)) {
 			throw new IllegalArgumentException("Invalid validation");
 		}
-		logger.info("Sending SMS to number: " + owner.getTelephone());
+		logger.info("Sending SMS to number: " + owner.getTelephone() + " [traceId=" + traceId + "]");
 	}
 
 	/**
