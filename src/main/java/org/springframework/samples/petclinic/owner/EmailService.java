@@ -15,10 +15,10 @@
  */
 package org.springframework.samples.petclinic.owner;
 
-import io.opentelemetry.api.trace.Span;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 /**
  * Service for handling Email operations
@@ -33,6 +33,10 @@ public class EmailService {
 	public EmailService(ValidationService validationService) {
 		this.validationService = validationService;
 	}
+
+    public void sendEmail(String to, String body) {
+        logger.info("Email sended: " + to + "with body" + body);
+    }
 
 	/**
 	 * Validates email address
@@ -65,16 +69,11 @@ public class EmailService {
 	/**
 	 * Send Email with Owner and Pet validation
 	 */
-	public void sendEmail(Owner owner, Pet pet) throws IllegalArgumentException{
-		// Get current trace ID from OpenTelemetry
-		String traceId = Span.current().getSpanContext().getTraceId();
-
-		if (!isEmailValid(owner.getEmail()) || !validationService.validateOwner(owner) || !validatePet(pet)) {
-			throw new IllegalArgumentException("Invalid validation");
+	public void sendEmail(Owner owner, Pet pet, RedirectAttributes redirectAttributes) throws IllegalArgumentException{
+		if (validatePet(pet) && validationService.validateOwner(owner)) {
+			String message = "Your visit has been booked. Email sent to " + owner.getEmail();
+            sendEmail(owner.getEmail(), message);
+			redirectAttributes.addFlashAttribute("message", message);
 		}
-		// For now, we'll use telephone field as email or create a placeholder
-		// In real implementation, Owner should have an email field
-		logger.info("Sending Email " + owner.getEmail() + " to owner: " + owner.getFirstName() + " "
-				+ owner.getLastName() + " [traceId=" + traceId + "]");
 	}
 }

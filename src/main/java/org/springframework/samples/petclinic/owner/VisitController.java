@@ -15,16 +15,9 @@
  */
 package org.springframework.samples.petclinic.owner;
 
-import java.time.Instant;
 import java.util.Map;
 import java.util.Optional;
-import java.util.concurrent.ConcurrentLinkedQueue;
-import java.util.concurrent.Executors;
-import java.util.concurrent.ScheduledExecutorService;
-import java.util.concurrent.TimeUnit;
 
-import jakarta.annotation.PostConstruct;
-import jakarta.annotation.PreDestroy;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Controller;
@@ -56,73 +49,9 @@ class VisitController {
 
 	private final EmailService emailService;
 
-	private final ConcurrentLinkedQueue<EmailQueueEntry> emailQueue = new ConcurrentLinkedQueue<>();
-
-	private final ScheduledExecutorService scheduler = Executors.newScheduledThreadPool(1);
-
 	public VisitController(OwnerRepository owners, EmailService emailService) {
 		this.owners = owners;
 		this.emailService = emailService;
-	}
-
-	@PostConstruct
-	public void startEmailProcessor() {
-		scheduler.scheduleAtFixedRate(this::processEmailQueue, 1, 1, TimeUnit.SECONDS);
-		logger.info("Email processor started, checking queue every 1 second");
-	}
-
-	@PreDestroy
-	public void stopEmailProcessor() {
-		scheduler.shutdown();
-		logger.info("Email processor stopped");
-	}
-
-	private void processEmailQueue() {
-		if (emailQueue.isEmpty()) {
-			return;
-		}
-
-		Instant now = Instant.now();
-
-		emailQueue.removeIf(entry -> {
-			long secondsElapsed = now.getEpochSecond() - entry.getTimestamp().getEpochSecond();
-
-			if (secondsElapsed >= 5) {
-				try {
-					emailService.sendEmail(entry.getOwner(), entry.getPet());
-				} catch (Exception ex) {}
-				return true; // Remove from queue
-			}
-			return false; // Keep in queue
-		});
-	}
-
-	static class EmailQueueEntry {
-
-		private final Owner owner;
-
-		private final Pet pet;
-
-		private final Instant timestamp;
-
-		public EmailQueueEntry(Owner owner, Pet pet) {
-			this.owner = owner;
-			this.pet = pet;
-			this.timestamp = Instant.now();
-		}
-
-		public Owner getOwner() {
-			return owner;
-		}
-
-		public Pet getPet() {
-			return pet;
-		}
-
-		public Instant getTimestamp() {
-			return timestamp;
-		}
-
 	}
 
 	@InitBinder
@@ -175,11 +104,10 @@ class VisitController {
 
 		owner.addVisit(petId, visit);
 		this.owners.save(owner);
-		redirectAttributes.addFlashAttribute("message", "Your visit has been booked");
+		logger.info("Visit saved: " + visit);
 
-		// Add to Email queue for processing after 5 seconds
 		Pet pet = owner.getPet(petId);
-		emailQueue.offer(new EmailQueueEntry(owner, pet));
+		emailService.sendEmail(owner, pet, redirectAttributes);
 
 		return "redirect:/owners/{ownerId}";
 	}

@@ -19,7 +19,10 @@ import java.util.Comparator;
 import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
+import java.util.concurrent.CompletableFuture;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
@@ -50,8 +53,9 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 class OwnerController {
 
 	private static final String VIEWS_OWNER_CREATE_OR_UPDATE_FORM = "owners/createOrUpdateOwnerForm";
+    private static final Logger log = LoggerFactory.getLogger(OwnerController.class);
 
-	private final OwnerRepository owners;
+    private final OwnerRepository owners;
 
 	private final SmsService smsService;
 
@@ -222,11 +226,14 @@ class OwnerController {
 			.collect(java.util.stream.Collectors.toList());
 
 		// Start sending in a separate thread
-		new Thread(() -> {
-			for (String city : cities) {
-				triggerSmsByCityEndpoint(city);
-			}
-		}).start();
+        CompletableFuture.runAsync(() -> {
+            for (String city : cities) {
+                triggerSmsByCityEndpoint(city);
+            }
+        }).exceptionally(ex -> {
+            log.error("Async SMS failed", ex);
+            return null;
+        });;
 
 		redirectAttributes.addFlashAttribute("message",
 				"SMS sending started for " + cities.size() + " cities in background");

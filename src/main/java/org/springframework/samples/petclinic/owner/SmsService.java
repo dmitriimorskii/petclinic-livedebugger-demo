@@ -91,19 +91,15 @@ public class SmsService {
 		String traceId = Span.current().getSpanContext().getTraceId();
 
 		// Validate and send SMS
-		if (!validationService.validateOwner(owner) || !validatePet(pet)) {
-			throw new IllegalArgumentException("Invalid validation");
+		if (validationService.validateOwner(owner) && validatePet(pet)) {
+			logger.info("Sending SMS to number: " + owner.getTelephone() + " [traceId=" + traceId + "]");
 		}
-		logger.info("Sending SMS to number: " + owner.getTelephone() + " [traceId=" + traceId + "]");
 	}
 
 	/**
 	 * Validates pet - checks if pet has required fields
 	 */
 	private boolean validatePet(Pet pet) {
-		if (pet == null) {
-			return false;
-		}
 		if (pet.getName() == null || pet.getName().trim().isEmpty()) {
 			return false;
 		}

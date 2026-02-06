@@ -9529,4 +9529,21 @@ strong {
     margin-top: 10px;
     margin-bottom: 30px; } }
 
+.pet-visits-table .visit-rows .visit-row td {
+  padding: 4px 8px; }
+
+.pet-visits-table .visit-rows .visit-row:last-child td {
+  border-bottom: 0; }
+
+.pet-visits-table th,
+.pet-visits-table td {
+  padding: 4px 8px;
+  text-align: left; }
+
+.owner-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  align-items: center; }
+
 /*# sourceMappingURL=../../../../../../target/petclinic.css.map */

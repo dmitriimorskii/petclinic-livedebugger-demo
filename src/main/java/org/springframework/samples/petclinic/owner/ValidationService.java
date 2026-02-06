@@ -41,16 +41,10 @@ public class ValidationService {
 		if (owner == null) {
 			return false;
 		}
-		if (owner.getFirstName() == null || owner.getFirstName().trim().isEmpty()) {
-			return false;
-		}
-		if (owner.getLastName() == null || owner.getLastName().trim().isEmpty()) {
-			return false;
-		}
-		if (!validatePhone(owner.getTelephone())) {
-			return false;
-		}
-		return true;
+		boolean firstNameValid = !(owner.getFirstName() == null || owner.getFirstName().trim().isEmpty());
+		boolean lastNameValid = !(owner.getLastName() == null || owner.getLastName().trim().isEmpty());
+		boolean phoneValid = validatePhone(owner.getTelephone());
+		return firstNameValid && lastNameValid && phoneValid;
 	}
 
 }
