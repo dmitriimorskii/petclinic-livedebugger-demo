@@ -9546,4 +9546,289 @@ strong {
   gap: 10px;
   align-items: center; }
 
+/* Admin panel homepage */
+.admin-portal {
+  --ap-ink: #18222f;
+  --ap-muted: #5c6a78;
+  --ap-accent: #0f7b6c;
+  --ap-accent-strong: #0a5b4f;
+  --ap-warm: #f3a11c;
+  --ap-border: rgba(17, 24, 39, 0.08);
+  background: radial-gradient(circle at 12% 8%, rgba(15, 123, 108, 0.15), transparent 42%), linear-gradient(140deg, #f7efe6 0%, #eef4f4 55%, #f4f6f9 100%);
+  border-radius: 24px;
+  padding: 28px;
+  position: relative;
+  overflow: hidden;
+  color: var(--ap-ink);
+  box-shadow: 0 26px 60px rgba(15, 23, 42, 0.16);
+  animation: admin-rise 0.7s ease-out; }
+
+.admin-portal::before {
+  content: "";
+  position: absolute;
+  inset: 12px;
+  border-radius: 20px;
+  border: 1px solid rgba(15, 23, 42, 0.08);
+  background: linear-gradient(120deg, rgba(255, 255, 255, 0.7), transparent 65%);
+  pointer-events: none; }
+
+.admin-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-end;
+  gap: 18px;
+  flex-wrap: wrap;
+  position: relative;
+  z-index: 1; }
+
+.admin-title h2 {
+  font-size: 26px;
+  margin-bottom: 10px; }
+
+.admin-kicker {
+  font-size: 12px;
+  text-transform: uppercase;
+  letter-spacing: 2px;
+  color: var(--ap-accent);
+  margin-bottom: 8px; }
+
+.admin-description {
+  color: var(--ap-muted);
+  font-size: 15px;
+  line-height: 22px;
+  margin-bottom: 18px; }
+
+.admin-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px; }
+
+.admin-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  border: none;
+  border-radius: 12px;
+  padding: 10px 18px;
+  font-size: 14px;
+  font-family: "montserratregular", sans-serif;
+  background: var(--ap-accent);
+  color: #ffffff;
+  box-shadow: 0 12px 24px rgba(15, 123, 108, 0.25);
+  transition: transform 0.2s ease, box-shadow 0.2s ease, background 0.2s ease; }
+
+.admin-btn:hover {
+  transform: translateY(-1px);
+  background: var(--ap-accent-strong);
+  box-shadow: 0 16px 30px rgba(15, 123, 108, 0.3); }
+
+.admin-btn--outline {
+  background: transparent;
+  color: var(--ap-accent);
+  border: 1px solid rgba(15, 123, 108, 0.4);
+  box-shadow: none; }
+
+.admin-btn--outline:hover {
+  background: rgba(15, 123, 108, 0.08);
+  box-shadow: none; }
+
+.admin-btn--light {
+  background: rgba(243, 161, 28, 0.18);
+  color: #6b3f00;
+  box-shadow: none; }
+
+.admin-btn--light:hover {
+  background: rgba(243, 161, 28, 0.28); }
+
+.admin-tabs {
+  margin-top: 18px;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  padding: 6px;
+  border-radius: 999px;
+  background: rgba(255, 255, 255, 0.75);
+  border: 1px solid var(--ap-border);
+  box-shadow: 0 12px 24px rgba(15, 23, 42, 0.06);
+  position: relative;
+  z-index: 1; }
+
+.admin-tab {
+  border: none;
+  background: transparent;
+  padding: 8px 16px;
+  border-radius: 999px;
+  font-size: 11px;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  font-family: "montserratregular", sans-serif;
+  color: var(--ap-muted);
+  transition: background 0.2s ease, color 0.2s ease; }
+
+.admin-tab.active {
+  background: var(--ap-accent);
+  color: #ffffff; }
+
+.admin-appointments {
+  margin-top: 28px;
+  position: relative;
+  z-index: 1; }
+
+.admin-activity-panel {
+  margin-top: 18px;
+  position: relative;
+  z-index: 1; }
+
+.admin-spotlight {
+  background: #ffffff;
+  border-radius: 18px;
+  padding: 18px;
+  border: 1px solid rgba(17, 24, 39, 0.1);
+  box-shadow: 0 16px 30px rgba(15, 23, 42, 0.08);
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  animation: admin-rise 0.6s ease both; }
+
+.admin-spotlight:nth-child(2) {
+  animation-delay: 0.05s; }
+
+.admin-spotlight--appointments {
+  background: linear-gradient(135deg, rgba(120, 210, 170, 0.32) 0%, rgba(255, 255, 255, 0.95) 65%);
+  border-color: rgba(120, 210, 170, 0.55);
+  font-weight: 600; }
+
+.admin-spotlight--appointments .admin-stat__label {
+  font-weight: 700; }
+
+.admin-spotlight--appointments .admin-stat__value {
+  font-weight: 700; }
+
+.admin-spotlight--activity {
+  background: linear-gradient(135deg, rgba(247, 214, 163, 0.34) 0%, rgba(255, 255, 255, 0.96) 60%);
+  border-color: rgba(247, 214, 163, 0.6); }
+
+.admin-stats {
+  margin-top: 20px;
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+  gap: 16px;
+  position: relative;
+  z-index: 1; }
+
+.admin-stat {
+  background: #ffffff;
+  border-radius: 16px;
+  padding: 16px;
+  border: 1px solid var(--ap-border);
+  box-shadow: 0 12px 25px rgba(15, 23, 42, 0.06);
+  animation: admin-rise 0.6s ease both; }
+
+.admin-stat:nth-child(2) {
+  animation-delay: 0.05s; }
+
+.admin-stat:nth-child(3) {
+  animation-delay: 0.1s; }
+
+.admin-stat__label {
+  font-size: 12px;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  color: var(--ap-muted); }
+
+.admin-stat__value {
+  font-size: 22px;
+  font-family: "montserratregular", sans-serif;
+  margin: 6px 0; }
+
+.admin-stat__meta {
+  font-size: 12px;
+  color: var(--ap-muted); }
+
+.admin-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 18px;
+  margin-top: 24px; }
+
+.admin-card {
+  background: #ffffff;
+  border: 1px solid var(--ap-border);
+  border-radius: 16px;
+  padding: 18px;
+  box-shadow: 0 12px 25px rgba(15, 23, 42, 0.06);
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+  animation: admin-rise 0.6s ease both; }
+
+.admin-card__title {
+  font-family: "montserratregular", sans-serif;
+  font-size: 16px; }
+
+.admin-card__body {
+  color: var(--ap-muted);
+  font-size: 14px;
+  line-height: 20px; }
+
+.admin-card__actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px; }
+
+.admin-card--wide {
+  grid-column: span 2; }
+
+.admin-activity {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  color: var(--ap-muted);
+  font-size: 13px;
+  display: grid;
+  gap: 8px; }
+
+.admin-activity span {
+  font-family: "montserratregular", sans-serif;
+  color: var(--ap-ink);
+  margin-right: 8px; }
+
+@keyframes admin-rise {
+  from {
+    opacity: 0;
+    transform: translateY(16px); }
+  to {
+    opacity: 1;
+    transform: translateY(0); } }
+
+@media (max-width: 992px) {
+  .admin-header {
+    align-items: flex-start; }
+  .admin-tabs {
+    border-radius: 16px; }
+  .admin-stats {
+    grid-template-columns: 1fr; }
+  .admin-grid {
+    grid-template-columns: 1fr; }
+  .admin-card--wide {
+    grid-column: span 1; } }
+
+@media (max-width: 768px) {
+  .admin-portal {
+    padding: 20px; }
+  .admin-title h2 {
+    font-size: 22px; }
+  .admin-actions {
+    width: 100%; }
+  .admin-btn {
+    width: 100%;
+    justify-content: center; } }
+
+@media (prefers-reduced-motion: reduce) {
+  .admin-portal,
+  .admin-card {
+    animation: none; }
+  .admin-btn {
+    transition: none; } }
+
 /*# sourceMappingURL=../../../../../../target/petclinic.css.map */

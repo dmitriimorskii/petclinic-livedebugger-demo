@@ -205,6 +205,11 @@ class OwnerController {
 		return "redirect:/";
 	}
 
+	private Pet getFirstPet(Owner owner) {
+		List<Pet> pets = owner.getPets();
+		return pets.isEmpty() ? null : pets.get(0);
+	}
+
 	/**
 	 * Send SMS to all owners - triggers sending in a separate thread, iterating through
 	 * all cities Uses strict mode for validation
@@ -250,7 +255,8 @@ class OwnerController {
 		for (Owner owner : cityOwners) {
 			// Get first pet or null if no pets
 			// Use strict mode by calling sendSms with owner and pet
-			smsService.sendSms(owner, owner.getPets().get(0));
+			Pet pet = getFirstPet(owner);
+            smsService.sendSms(owner, pet);
 		}
 	}
 

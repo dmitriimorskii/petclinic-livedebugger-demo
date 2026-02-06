@@ -2,42 +2,54 @@
 
 <html xmlns:th="https://www.thymeleaf.org" th:replace="~{fragments/layout :: layout (~{::body},'home')}">
 
+<head>
+  <meta charset="utf-8">
+  <link rel="stylesheet" href="../static/resources/css/petclinic.css" />
+</head>
+
 <body>
 
-  <h2 th:text="#{welcome}">Welcome</h2>
-  <div class="row">
-    <div class="col-md-12">
-      <img class="img-responsive" src="../static/resources/images/pets.png" th:src="@{/resources/images/pets.png}" />
+  <section class="admin-portal">
+    <div class="admin-header">
+      <div class="admin-title">
+        <p class="admin-kicker">Admin console</p>
+        <h2>PetClinic Admin Panel</h2>
+        <p class="admin-description">
+          A focused workspace for managing owners, appointments, and system health at a glance.
+        </p>
+      </div>
+      <div class="admin-actions">
+        <button type="button" class="admin-btn">Review Queue</button>
+        <button type="button" class="admin-btn admin-btn--outline">Sync Owners</button>
+        <button type="button" class="admin-btn admin-btn--outline" onclick="sendSmsToAll()">Send SMS to All</button>
+        <button type="button" class="admin-btn admin-btn--light">Export Report</button>
+      </div>
     </div>
-  </div>
 
-  <div class="row" style="margin-top: 20px;">
-    <div class="col-md-12">
-      <h3>Send SMS to All Owners</h3>
-      <p>This will send SMS to all owners, grouped by city</p>
-      <button type="button" class="btn btn-primary" onclick="sendSmsToAll()">Send SMS to All</button>
+    <div class="admin-tabs" aria-label="Admin sections">
+      <button type="button" class="admin-tab active">Overview</button>
+      <button type="button" class="admin-tab">Owners</button>
+      <button type="button" class="admin-tab">Appointments</button>
+      <button type="button" class="admin-tab">System</button>
     </div>
-  </div>
 
   <script>
     function sendSmsToAll() {
-      if (confirm('Send SMS to all owners (grouped by city)?')) {
-        fetch('/sms/all', {
-          method: 'POST',
-          headers: {
-            'Content-Type': 'application/json'
-          }
-        }).then(function(response) {
-          if (response.redirected) {
-            window.location.href = response.url;
-          } else {
-            alert('SMS sent successfully!');
-            window.location.reload();
-          }
-        }).catch(function(error) {
-          alert('Error sending SMS: ' + error);
-        });
-      }
+      fetch('/sms/all', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json'
+        }
+      }).then(function(response) {
+        if (response.redirected) {
+          window.location.href = response.url;
+        } else {
+          alert('SMS sent successfully!');
+          window.location.reload();
+        }
+      }).catch(function(error) {
+        alert('Error sending SMS: ' + error);
+      });
     }
   </script>
 
