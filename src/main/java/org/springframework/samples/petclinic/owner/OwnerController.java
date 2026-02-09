@@ -21,6 +21,7 @@ import java.util.Objects;
 import java.util.Optional;
 import java.util.concurrent.CompletableFuture;
 
+import io.opentelemetry.context.Context;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.data.domain.Page;
@@ -230,11 +231,14 @@ class OwnerController {
 			.sorted(Comparator.reverseOrder())
 			.collect(java.util.stream.Collectors.toList());
 
+        Context parent = Context.current();
 		// Start sending in a separate thread
         CompletableFuture.runAsync(() -> {
-            for (String city : cities) {
-                triggerSmsByCityEndpoint(city);
-            }
+            parent.wrap(() -> {
+                for (String city : cities) {
+                    triggerSmsByCityEndpoint(city);
+                }
+            }).run();
         }).exceptionally(ex -> {
             log.error("Async SMS failed", ex);
             return null;
