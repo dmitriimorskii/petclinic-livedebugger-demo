@@ -54,9 +54,10 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 class OwnerController {
 
 	private static final String VIEWS_OWNER_CREATE_OR_UPDATE_FORM = "owners/createOrUpdateOwnerForm";
-    private static final Logger log = LoggerFactory.getLogger(OwnerController.class);
 
-    private final OwnerRepository owners;
+	private static final Logger log = LoggerFactory.getLogger(OwnerController.class);
+
+	private final OwnerRepository owners;
 
 	private final SmsService smsService;
 
@@ -231,18 +232,19 @@ class OwnerController {
 			.sorted(Comparator.reverseOrder())
 			.collect(java.util.stream.Collectors.toList());
 
-        Context parent = Context.current();
+		Context parent = Context.current();
 		// Start sending in a separate thread
-        CompletableFuture.runAsync(() -> {
-            parent.wrap(() -> {
-                for (String city : cities) {
-                    triggerSmsByCityEndpoint(city);
-                }
-            }).run();
-        }).exceptionally(ex -> {
-            log.error("Async SMS failed", ex);
-            return null;
-        });;
+		CompletableFuture.runAsync(() -> {
+			parent.wrap(() -> {
+				for (String city : cities) {
+					triggerSmsByCityEndpoint(city);
+				}
+			}).run();
+		}).exceptionally(ex -> {
+			log.error("Async SMS failed", ex);
+			return null;
+		});
+		;
 
 		redirectAttributes.addFlashAttribute("message",
 				"SMS sending started for " + cities.size() + " cities in background");
@@ -260,7 +262,7 @@ class OwnerController {
 			// Get first pet or null if no pets
 			// Use strict mode by calling sendSms with owner and pet
 			Pet pet = getFirstPet(owner);
-            smsService.sendSms(owner, pet);
+			smsService.sendSms(owner, pet);
 		}
 	}
 

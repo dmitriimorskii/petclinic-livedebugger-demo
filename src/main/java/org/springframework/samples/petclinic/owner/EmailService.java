@@ -34,9 +34,9 @@ public class EmailService {
 		this.validationService = validationService;
 	}
 
-    public void sendEmail(String to, String body) {
-        logger.info("Email sended: " + to + "with body" + body);
-    }
+	public void sendEmail(String to, String body) {
+		logger.info("Email sended: " + to + "with body" + body);
+	}
 
 	/**
 	 * Validates email address
@@ -48,7 +48,6 @@ public class EmailService {
 		// Basic email validation
 		return email.matches("^[A-Za-z0-9+_.-]+@[A-Za-z0-9.-]+\\.[A-Za-z]{2,}$");
 	}
-
 
 	/**
 	 * Validates pet - checks if pet has required fields
@@ -69,11 +68,12 @@ public class EmailService {
 	/**
 	 * Send Email with Owner and Pet validation
 	 */
-	public void sendEmail(Owner owner, Pet pet, RedirectAttributes redirectAttributes) throws IllegalArgumentException{
+	public void sendEmail(Owner owner, Pet pet, RedirectAttributes redirectAttributes) throws IllegalArgumentException {
 		if (validatePet(pet) && validationService.validateOwner(owner)) {
 			String message = "Your visit has been booked. Email sent to " + owner.getEmail();
-            sendEmail(owner.getEmail(), message);
+			sendEmail(owner.getEmail(), message);
 			redirectAttributes.addFlashAttribute("message", message);
 		}
 	}
+
 }

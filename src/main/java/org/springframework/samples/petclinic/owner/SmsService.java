@@ -37,7 +37,6 @@ public class SmsService {
 		this.validationService = validationService;
 	}
 
-
 	/**
 	 * Version 1: Basic phone validation - checks if phone exists and has minimum length
 	 */
@@ -108,4 +107,5 @@ public class SmsService {
 		}
 		return true;
 	}
+
 }
