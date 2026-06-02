@@ -251,7 +251,7 @@
         <artifactId>spring-boot-maven-plugin</artifactId>
         <configuration>
           <jvmArguments>
-            -javaagent:/Users/ndkoval/IdeaProjects/lincheck-and-plugin/lincheck/live-debugger/build/libs/live-debugger-fat.jar=jmxMBean=on
+            -javaagent:/Users/ndkoval/IdeaProjects/DebuggingLab/lincheck/live-debugger/build/libs/app-glass-agent.jar=jmxMBean=on
             -Dcom.sun.management.jmxremote
             -Dcom.sun.management.jmxremote.local.only=false
             -Dcom.sun.management.jmxremote.port=9998
