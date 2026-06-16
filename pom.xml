@@ -251,7 +251,7 @@
         <artifactId>spring-boot-maven-plugin</artifactId>
         <configuration>
           <jvmArguments>
-            -Djava.rmi.server.hostname=localhost
+            -javaagent:/Users/ndkoval/IdeaProjects/DebuggingLab/lincheck/live-debugger/build/libs/app-glass-agent.jar=tracingServer=on,serverPort=9999
           </jvmArguments>
         </configuration>
         <executions>

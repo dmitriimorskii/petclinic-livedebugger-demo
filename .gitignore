@@ -1,0 +1,17 @@
+# Claude Code local settings (personal overrides; should not be committed)
+.claude/settings.local.json
+
+# Maven build output
+target/
+
+# IntelliJ IDEA
+.idea/
+*.iml
+*.iws
+*.ipr
+
+# AI / agent working files
+.ai/
+
+# macOS
+.DS_Store
